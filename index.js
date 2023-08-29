@@ -8,14 +8,48 @@ const { fifaData } = require('./fifa.js')
 
 //(a) 2014 Dünya kupası Finali Evsahibi takım ismi (dizide "Home Team Name" anahtarı)
 
+
+const filteredName=fifaData.filter((diziItem)=>{
+	//console.log("dizi:",diziItem)
+	if(diziItem.Year===2014 && diziItem.Stage==="Final"){
+		//console.log("dizi2:",diziItem)
+		return true
+	}
+})
+
+
+console.log("filtredname:",filteredName)
+console.log("Görev 1 a =>",filteredName[0]["Home Team Name"])
+
 //(b) 2014 Dünya kupası Finali Deplasman takım ismi  (dizide "Away Team Name" anahtarı)
+const deplasmanTakım=fifaData.filter(function(diziItems){
+if(diziItems.Year===2014 && diziItems.Stage==="Final"){
+	return true;
+	}
+})
+console.log("Görev 1 b =>" ,deplasmanTakım[0]["Away Team Name"])
 
 //(c) 2014 Dünya kupası finali Ev sahibi takım golleri (dizide "Home Team Goals" anahtarı)
+   const evSahibiGolleri=fifaData.filter(function(dizi){
+    if(dizi.Year===2014 && dizi.Stage==="Final"){
+				return dizi;
+	}
 
+})
+console.log("Görev 1 c =>",evSahibiGolleri[0]["Home Team Goals"])
 //(d)2014 Dünya kupası finali Deplasman takım golleri  (dizide "Away Team Goals" anahtarı)
-
+const deplasmanTakımGolleri=fifaData.filter(function(diziItem){
+	if(diziItem.Year===2014 && diziItem.Stage==="Final"){
+		return true;
+	}           
+})
+console.log("Görev 1 d =>",deplasmanTakımGolleri[0]["Away Team Goals"])
 //(e) 2014 Dünya kupası finali kazananı*/
-
+const dünyaKupasıKazananı=fifaData.filter(function(diziItem){
+	if(diziItem.Year===2014)
+	return true
+})
+console.log("Görev 1 e =>",dünyaKupasıKazananı)
 
 /*  Görev 2: 
 	Finaller adlı fonksiyonu kullanarak aşağıdakileri uygulayın:
@@ -25,11 +59,24 @@ const { fifaData } = require('./fifa.js')
 	💡 İPUCU - verilen data içindeki nesnelerin(objects) "Stage" anahtarına bakmalısınız
 */
 
-function Finaller(/* kodlar buraya */) {
-	
-    /* kodlar buraya */
-}
+function Finaller(dizi) {
+	const finalDizileri = dizi.filter(function(diziItem){
+		if(diziItem.Stage==="Final"){
+			return true
+		}
 
+		
+
+	})
+	console.log("finalDizileri",finalDizileri)
+	return finalDizileri
+
+}
+	
+	
+
+
+console.log("Görev 2 =>",Finaller(fifaData))
 
 
 /*  Görev 3: 
@@ -39,11 +86,22 @@ function Finaller(/* kodlar buraya */) {
 	3. Finaller data setindeki tüm yılları içeren "years" adındaki diziyi(array) döndürecek
 	*/
 
-function Yillar(/* kodlar buraya */) {
+function Yillar(dizi,fonksiyon) {
 	
-    /* kodlar buraya */
-}
+    const finalMacları=fonksiyon(dizi)
+	const yıllar=finalMacları.map(function(diziItem){
+		const yıl=diziItem.Year
+		console.log("yıl :",yıl)
+		
+		return yıl
+		
+	})
+	console.log("yıllar",yıllar)
+	return yıllar
 
+	
+}
+console.log("Görev 3 => ", Yillar(fifaData,Finaller))
 
 /*  Görev 4: 
 	Bir higher-order fonksiyonunu olan Kazananlar isimli fonksiyona aşağıdakileri uygulayın:  
@@ -53,13 +111,21 @@ function Yillar(/* kodlar buraya */) {
 	💡 İPUCU: Beraberlikler(ties) için şimdilik endişelenmeyin (Detaylı bilgi için README dosyasına bakabilirsiniz.)
 	4. Tüm kazanan ülkelerin isimlerini içeren `kazananlar` adında bir dizi(array) döndürecek(return)  */ 
 
-function Kazananlar(/* kodlar buraya */) {
+function Kazananlar(dizi,fonksiyon,) {
 	
-    /* kodlar buraya */
-	
+    const finalMacları=fonksiyon(dizi)
+	const kazananlar=finalMacları.map(function(diziItem){
+		if(diziItem["Home Team Goals"]>diziItem["Away Team Goals"]){
+			return diziItem["Home Team Name"]
+		}else{
+			return diziItem["Away Team Name"]
+		}
+			
+	});
+	return kazananlar
 }
 
-
+console.log("Görev 4 =>",Kazananlar(fifaData,Finaller))
 
 /*  Görev 5: 
 	Bir higher-order fonksiyonu olan YillaraGoreKazananlar isimli fonksiyona aşağıdakileri uygulayın:
@@ -72,11 +138,18 @@ function Kazananlar(/* kodlar buraya */) {
 	💡 İPUCU: her cümlenin adım 4'te belirtilen cümleyle birebir aynı olması gerekmektedir.
 */
 
-function YillaraGoreKazananlar(/* kodlar buraya */) {
+function YillaraGoreKazananlar(dizi,fonksiyon1,fonksiyon2,fonksiyon3) {
 	
-/* kodlar buraya */
+const finaller=fonksiyon1(dizi)
+const yıllar=fonksiyon2(finaller,fonksiyon1)
+const kazananlar=fonksiyon3(finaller,fonksiyon1)
+const sonuc=yıllar.map(function(diziItem,index){
+	
+	return diziItem.Year + "yılında"+ "," + diziItem[index]+ " dünya kupasını kazandı !"
+})
 
 }
+ console.log("Görev 5 =>",YillaraGoreKazananlar(fifaData,Finaller,Yillar,Kazananlar) )
 
 
 /*  Görev 6: 
